@@ -1,0 +1,21 @@
+.movie-layout {
+  display: flex;
+  flex-wrap: wrap;
+  min-width: 50vh;
+}
+
+.movie-box {
+  padding: 0.5rem;
+  max-width: 100px;
+  overflow-wrap: break-word;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  background: white;
+  border-radius: 1px solid black;
+  padding: 0.5rem;
+  position: sticky;
+  top: 0;
+}
