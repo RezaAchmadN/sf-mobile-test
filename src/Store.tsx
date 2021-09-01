@@ -4,7 +4,7 @@ import { IState, IAction } from "./interfaces";
 
 const initialState: IState = {
     movies: [],
-    favourites: []
+    WatchLists: []
 }
 
 export const Store = React.createContext<IState | any>(initialState)
@@ -14,9 +14,9 @@ function reducer(state: IState, action: IAction):IState {
         case 'FETCH_DATA':
             return { ...state, movies: action.payload.results}
         case 'ADD_FAV':
-            return { ...state, favourites: [...state.favourites, action.payload]}
+            return { ...state, WatchLists: [...state.WatchLists, action.payload]}
         case 'REMOVE_FAV':
-            return { ...state, favourites: action.payload}
+            return { ...state, WatchLists: action.payload}
         default:
             return state
     }

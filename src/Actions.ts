@@ -16,13 +16,13 @@ export const toogleFavAction = (
   dispatch: any,
   movie: IMovie | any
 ): IAction => {
-  const movieInFav = state.favourites.includes(movie);
+  const movieInFav = state.WatchLists.includes(movie);
   let dispatchObj = {
     type: "ADD_FAV",
     payload: movie,
   };
   if (movieInFav) {
-    const favWithoutMovie = state.favourites.filter(
+    const favWithoutMovie = state.WatchLists.filter(
       (fav: IMovie) => fav.id !== movie.id
     );
     dispatchObj = {

@@ -1,24 +1,20 @@
 import React from "react";
 import { Store } from "../Store";
 import { IMovieProps } from "../interfaces";
-import { fetchDataAction, toogleFavAction } from "../Actions";
-import { ScrollView, View, Text } from "react-native";
+import { toogleFavAction } from "../Actions";
+import { ScrollView, Text, View } from "react-native";
 import { Styles } from "../../Styles";
 
 const MovieList = React.lazy<any>(() => import("../components/MovieList"));
 
-export default function Home(): JSX.Element {
+export default function WatchLists(): JSX.Element {
   const { state, dispatch } = React.useContext(Store);
 
-  React.useEffect(() => {
-    state.movies.length === 0 && fetchDataAction(dispatch);
-  });
-
   const props: IMovieProps = {
-    movies: state.movies,
-    store: { state, dispatch },
+    movies: state.WatchLists,
     toogleFavAction,
     WatchLists: state.WatchLists,
+    store: { state, dispatch },
   };
 
   return (

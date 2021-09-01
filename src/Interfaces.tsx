@@ -6,7 +6,7 @@ export type Dispatch = React.Dispatch<IAction>;
 
 export interface IState {
   movies: Array<IMovie>;
-  favourites: Array<IMovie>;
+  WatchLists: Array<IMovie>;
 }
 
 export interface IAction {
@@ -39,5 +39,5 @@ export interface IMovieProps {
     dispatch: Dispatch,
     movie: IMovie
   ) => IAction;
-  favourites: Array<IMovie>;
+  WatchLists: Array<IMovie>;
 }
