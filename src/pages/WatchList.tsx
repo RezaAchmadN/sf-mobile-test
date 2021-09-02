@@ -1,31 +1,23 @@
 import React from "react";
-import { Store } from "../Store";
-import { IMovieProps } from "../interfaces";
-import { toogleFavAction } from "../Actions";
+import { IMovie } from "../interfaces";
 import { ScrollView, Text, View } from "react-native";
 import { Styles } from "../../Styles";
+import { WatchListsStore } from "../stores/WatchListsStore";
 
-const MovieList = React.lazy<any>(() => import("../components/MovieList"));
+const MovieList = React.lazy<any>(() => import("../components/MovieCard"));
 
 export default function WatchLists(): JSX.Element {
-  const { state, dispatch } = React.useContext(Store);
-
-  const props: IMovieProps = {
-    movies: state.WatchLists,
-    toogleFavAction,
-    WatchLists: state.WatchLists,
-    store: { state, dispatch },
-  };
+  const { watchLists } = React.useContext(WatchListsStore);
 
   return (
     <ScrollView>
-      <React.Fragment>
-        <React.Suspense fallback={<Text>loading...</Text>}>
-          <View style={Styles.movieLayout}>
-            <MovieList {...props} />
-          </View>
-        </React.Suspense>
-      </React.Fragment>
+      <React.Suspense fallback={<Text>loading...</Text>}>
+        <View style={Styles.movieLayout}>
+          {watchLists.map((movie: IMovie, index: number) => (
+            <MovieList key={index} {...movie} />
+          ))}
+        </View>
+      </React.Suspense>
     </ScrollView>
   );
 }

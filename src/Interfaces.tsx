@@ -33,7 +33,7 @@ export interface IMovie {
 
 export interface IMovieProps {
   movies: Array<IMovie>;
-  store: { state: IState; dispatch: Dispatch };
+  WatchListsStore: { watchLists: []; watchListsDispatch: Dispatch };
   toogleFavAction: (
     state: IState,
     dispatch: Dispatch,
