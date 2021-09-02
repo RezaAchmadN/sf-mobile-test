@@ -8,7 +8,6 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 export default function movieList(props: any): Array<JSX.Element> {
   const { movies, toogleFavAction, WatchLists, store } = props;
   const { state, dispatch } = store;
-  console.log(WatchLists);
   
   const imgBaseURL = "https://www.themoviedb.org/t/p/w100_and_h100_bestv2/";
   return movies.map((movie: IMovie, index: number) => {
