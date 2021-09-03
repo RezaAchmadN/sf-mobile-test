@@ -1,6 +1,6 @@
 import React from "react";
-import { IMovie, IMovieProps } from "../interfaces";
-import { fetchDataAction, toogleFavAction } from "../Actions";
+import { IMovie } from "../interfaces";
+import { fetchDataMoviesAction } from "../Actions";
 import { ScrollView, View, Text } from "react-native";
 import { Styles } from "../../Styles";
 import { MoviesStore } from "../stores/MoviesStore";
@@ -11,7 +11,7 @@ export default function Home(): JSX.Element {
   const { movies, moviesDispatch } = React.useContext(MoviesStore);
 
   React.useEffect(() => {
-    movies.length === 0 && fetchDataAction(moviesDispatch);
+    movies.length === 0 && fetchDataMoviesAction(moviesDispatch);
   });
 
   return (
