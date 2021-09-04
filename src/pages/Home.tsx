@@ -3,11 +3,19 @@ import { IMovie } from "../interfaces";
 import { fetchDataMoviesAction } from "../Actions";
 import { ScrollView, View, Text } from "react-native";
 import { Styles } from "../../Styles";
-import { MoviesStore } from "../stores/MoviesStore";
+import { MoviesProvider, MoviesStore } from "../stores/MoviesStore";
 
 const MovieList = React.lazy<any>(() => import("../components/MovieCard"));
 
 export default function Home(): JSX.Element {
+  return (
+    <MoviesProvider>
+      <HomeScreen />
+    </MoviesProvider>
+  );
+}
+
+function HomeScreen(): JSX.Element {
   const { movies, moviesDispatch } = React.useContext(MoviesStore);
 
   React.useEffect(() => {

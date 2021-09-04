@@ -18,20 +18,14 @@ export default function App(): JSX.Element {
   return (
     <View style={Styles.root}>
       <WatchListProvider>
-        <MoviesProvider>
-          <PopularProvider>
-            <NowPlayingProvider>
-              <NavigationContainer>
-                <Drawer.Navigator initialRouteName="Home">
-                  <Drawer.Screen name="Home" component={Home} />
-                  <Drawer.Screen name="Popular Movies" component={Popular} />
-                  <Drawer.Screen name="Now Playing Movies" component={NowPlaying} />
-                  <Drawer.Screen name="WatchList" component={WatchList} />
-                </Drawer.Navigator>
-              </NavigationContainer>
-            </NowPlayingProvider>
-          </PopularProvider>
-        </MoviesProvider>
+        <NavigationContainer>
+          <Drawer.Navigator initialRouteName="Home">
+            <Drawer.Screen name="Home" component={Home} />
+            <Drawer.Screen name="Popular Movies" component={Popular} />
+            <Drawer.Screen name="Now Playing Movies" component={NowPlaying} />
+            <Drawer.Screen name="WatchList" component={WatchList} />
+          </Drawer.Navigator>
+        </NavigationContainer>
       </WatchListProvider>
     </View>
   );

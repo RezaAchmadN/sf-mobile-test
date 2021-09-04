@@ -3,11 +3,19 @@ import { ScrollView, Text, View } from "react-native";
 import { Styles } from "../../Styles";
 import { fetchDataNowPlayingAction } from "../Actions";
 import { IMovie } from "../interfaces";
-import { NowPlayingStore } from "../stores/NowPlayingStore";
+import NowPlayingProvider, { NowPlayingStore } from "../stores/NowPlayingStore";
 
 const MovieList = React.lazy(() => import("../components/MovieCard"));
 
 export default function NowPlaying() {
+  return (
+    <NowPlayingProvider>
+      <NowPLayingScreen />
+    </NowPlayingProvider>
+  );
+}
+
+function NowPLayingScreen(): JSX.Element {
   const { nowPlaying, nowPLayingDispatch } = React.useContext(NowPlayingStore);
 
   React.useEffect(() => {
