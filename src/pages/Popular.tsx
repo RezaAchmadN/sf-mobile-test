@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, Text, View } from "react-native";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { Styles } from "../../Styles";
 import { fetchDataPopularAction } from "../Actions";
 import { IMovie } from "../interfaces";
@@ -7,15 +7,15 @@ import PopularProvider, { PopularStore } from "../stores/PopularStore";
 
 const MovieList = React.lazy<any>(() => import("../components/MovieCard"));
 
-export default function Popular() {
+export default function Popular({ navigation }: any) {
   return (
     <PopularProvider>
-      <PopularScreen />
+      <PopularScreen {...navigation} />
     </PopularProvider>
   );
 }
 
-function PopularScreen(): JSX.Element {
+function PopularScreen(navigation: any): JSX.Element {
   const { popular, popularDispatch } = React.useContext(PopularStore);
 
   React.useEffect(() => {
@@ -26,7 +26,14 @@ function PopularScreen(): JSX.Element {
       <React.Suspense fallback={<Text>loading...</Text>}>
         <View style={Styles.movieLayout}>
           {popular.map((movie: IMovie, index: number) => (
-            <MovieList key={index} {...movie} />
+            <TouchableOpacity
+              key={index}
+              onPress={() =>
+                navigation?.push("MovieDetail", { title: movie.title })
+              }
+            >
+              <MovieList {...movie} />
+            </TouchableOpacity>
           ))}
         </View>
       </React.Suspense>

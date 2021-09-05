@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, Text, View } from "react-native";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { Styles } from "../../Styles";
 import { fetchDataNowPlayingAction } from "../Actions";
 import { IMovie } from "../interfaces";
@@ -7,15 +7,15 @@ import NowPlayingProvider, { NowPlayingStore } from "../stores/NowPlayingStore";
 
 const MovieList = React.lazy(() => import("../components/MovieCard"));
 
-export default function NowPlaying() {
+export default function NowPlaying({ navigation }: any) {
   return (
     <NowPlayingProvider>
-      <NowPLayingScreen />
+      <NowPLayingScreen {...navigation} />
     </NowPlayingProvider>
   );
 }
 
-function NowPLayingScreen(): JSX.Element {
+function NowPLayingScreen(navigation: any): JSX.Element {
   const { nowPlaying, nowPLayingDispatch } = React.useContext(NowPlayingStore);
 
   React.useEffect(() => {
@@ -27,7 +27,14 @@ function NowPLayingScreen(): JSX.Element {
       <React.Suspense fallback={<Text>Loading...</Text>}>
         <View style={Styles.movieLayout}>
           {nowPlaying.map((movie: IMovie, index: number) => (
-            <MovieList key={index} {...movie} />
+            <TouchableOpacity
+              key={index}
+              onPress={() =>
+                navigation?.push("MovieDetail", { title: movie.title })
+              }
+            >
+              <MovieList {...movie} />
+            </TouchableOpacity>
           ))}
         </View>
       </React.Suspense>

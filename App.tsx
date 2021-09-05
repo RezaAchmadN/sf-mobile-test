@@ -1,30 +1,41 @@
 import React from "react";
 import { View } from "react-native";
-import { Styles } from "./Styles";
 import { createDrawerNavigator } from "@react-navigation/drawer";
+import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
+
+import { Styles } from "./Styles";
 import Home from "./src/pages/Home";
 import WatchList from "./src/pages/WatchList";
 import { WatchListProvider } from "./src/stores/WatchListsStore";
-import { MoviesProvider } from "./src/stores/MoviesStore";
-import PopularProvider from "./src/stores/PopularStore";
 import Popular from "./src/pages/Popular";
-import NowPlayingProvider from "./src/stores/NowPlayingStore";
 import NowPlaying from "./src/pages/NowPlaying";
+import MovieDetail from "./src/pages/MovieDetail";
+
+
+function DrawerNavigation() {
+  const Drawer = createDrawerNavigator();
+  return (
+    <Drawer.Navigator initialRouteName="Home">
+      <Drawer.Screen name="Home" component={Home} />
+      <Drawer.Screen name="Popular Movies" component={Popular} />
+      <Drawer.Screen name="Now Playing Movies" component={NowPlaying} />
+      <Drawer.Screen name="WatchList" component={WatchList} />
+    </Drawer.Navigator>
+  );
+}
 
 export default function App(): JSX.Element {
-  const Drawer = createDrawerNavigator();
+  const Stack = createStackNavigator();
 
   return (
     <View style={Styles.root}>
       <WatchListProvider>
         <NavigationContainer>
-          <Drawer.Navigator initialRouteName="Home">
-            <Drawer.Screen name="Home" component={Home} />
-            <Drawer.Screen name="Popular Movies" component={Popular} />
-            <Drawer.Screen name="Now Playing Movies" component={NowPlaying} />
-            <Drawer.Screen name="WatchList" component={WatchList} />
-          </Drawer.Navigator>
+          <Stack.Navigator initialRouteName="Root">
+            <Stack.Screen name="Root" component={DrawerNavigation} options={{ headerShown: false }}/>
+            <Stack.Screen name="MovieDetail" component={MovieDetail} options={({ route }: any) => ({ title: route.params.title })}/>
+          </Stack.Navigator>
         </NavigationContainer>
       </WatchListProvider>
     </View>

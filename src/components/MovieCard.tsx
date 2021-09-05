@@ -1,15 +1,17 @@
 import React from "react";
-import { IMovie } from "../Interfaces";
-import { View, Text, Image, TouchableOpacity } from "react-native";
-import { Styles } from "../../Styles";
+import { View, Text, Image, TouchableOpacity, Button } from "react-native";
 import Entypo from "react-native-vector-icons/Entypo";
 import Ionicons from "react-native-vector-icons/Ionicons";
+
+import { IMovie } from "../Interfaces";
+import { Styles } from "../../Styles";
 import { WatchListsStore } from "../stores/WatchListsStore";
 import { toogleFavAction } from "../Actions";
 
+
 export default function movieList(movie: IMovie): JSX.Element {
   const { watchLists, watchListsDispatch } = React.useContext(WatchListsStore);
-  
+
   const imgBaseURL = "https://www.themoviedb.org/t/p/w100_and_h100_bestv2/";
   return (
     <View style={Styles.movieBox}>
