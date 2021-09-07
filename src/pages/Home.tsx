@@ -1,13 +1,26 @@
 import React from "react";
+import { ScrollView, View, Text, TouchableOpacity } from "react-native";
+import { Button } from 'react-native-elements';
+import Feather from "react-native-vector-icons/Feather";
+
 import { IMovie } from "../interfaces";
 import { fetchDataMoviesAction } from "../Actions";
-import { ScrollView, View, Text, TouchableOpacity } from "react-native";
 import { Styles } from "../../Styles";
 import { MoviesProvider, MoviesStore } from "../stores/MoviesStore";
 
 const MovieList = React.lazy<any>(() => import("../components/MovieCard"));
 
 export default function Home({ navigation }: any): JSX.Element {
+React.useLayoutEffect(() => {
+  navigation.setOptions({
+    headerRight: () => (
+      <Button onPress={() => navigation.push("Search")} icon={
+        <Feather name="search" size={30}/>
+      } type="clear" />
+    ),
+  });
+}, [navigation]);
+
   return (
     <MoviesProvider>
       <HomeScreen {...navigation} />

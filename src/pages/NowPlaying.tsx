@@ -1,5 +1,8 @@
 import React from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { Button } from 'react-native-elements';
+import Feather from "react-native-vector-icons/Feather";
+
 import { Styles } from "../../Styles";
 import { fetchDataNowPlayingAction } from "../Actions";
 import { IMovie } from "../interfaces";
@@ -8,6 +11,16 @@ import NowPlayingProvider, { NowPlayingStore } from "../stores/NowPlayingStore";
 const MovieList = React.lazy(() => import("../components/MovieCard"));
 
 export default function NowPlaying({ navigation }: any) {
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Button onPress={() => navigation.push("Search")} icon={
+          <Feather name="search" size={30}/>
+        } type="clear" />
+      ),
+    });
+  }, [navigation]);
+  
   return (
     <NowPlayingProvider>
       <NowPLayingScreen {...navigation} />

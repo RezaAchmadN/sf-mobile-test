@@ -1,10 +1,10 @@
 import React from "react";
-import { IMovie, IAction } from "./interfaces";
-
 import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
 import { RestLink } from "apollo-link-rest";
 
-const restLink = new RestLink({
+import { IMovie, IAction } from "./interfaces";
+
+export const restLink = new RestLink({
   uri: "https://api.themoviedb.org/3/",
 });
 
@@ -111,15 +111,46 @@ export const fetchDataNowPlayingAction = async (
     }
   }
 `;
-const client = new ApolloClient({
-  link: restLink,
-  cache: new InMemoryCache(),
-});
+  const client = new ApolloClient({
+    link: restLink,
+    cache: new InMemoryCache(),
+  });
 
   await client.query({ query }).then((response) => {
     return dispatch(response.data.Movies.results);
   });
 };
+
+export const fetchDataSearchAction = async (dispatch: React.Dispatch<[]>, searchQuery: string) => {
+  const query = gql`
+    query Movies {
+      Movies
+        @rest(
+          type: "Movies"
+          method: "GET"
+          path: "search/movie?api_key=48367485a90367721f562c3532360bb3&query=${searchQuery}"
+        ) {
+        results @type(name: "Movie") {
+          id
+          title
+          overview
+          poster_path
+          release_date
+          vote_average
+        }
+      }
+    }
+  `;
+  const client = new ApolloClient({
+    link: restLink,
+    cache: new InMemoryCache(),
+  });
+
+  await client.query({ query }).then((response) => {
+    return dispatch(response.data.Movies.results);
+  });
+};
+
 export const toogleFavAction = (
   movies: Array<IMovie>,
   dispatch: any,

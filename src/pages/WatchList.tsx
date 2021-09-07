@@ -1,6 +1,7 @@
 import React from "react";
-import { IMovie } from "../interfaces";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+
+import { IMovie } from "../interfaces";
 import { Styles } from "../../Styles";
 import { WatchListsStore } from "../stores/WatchListsStore";
 

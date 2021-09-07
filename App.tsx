@@ -11,6 +11,7 @@ import { WatchListProvider } from "./src/stores/WatchListsStore";
 import Popular from "./src/pages/Popular";
 import NowPlaying from "./src/pages/NowPlaying";
 import MovieDetail from "./src/pages/MovieDetail";
+import Search from "./src/pages/Search";
 
 
 function DrawerNavigation() {
@@ -35,9 +36,14 @@ export default function App(): JSX.Element {
           <Stack.Navigator initialRouteName="Root">
             <Stack.Screen name="Root" component={DrawerNavigation} options={{ headerShown: false }}/>
             <Stack.Screen name="MovieDetail" component={MovieDetail} options={({ route }: any) => ({ title: route.params.title })}/>
+            <Stack.Screen name="Search" component={Search}/>
           </Stack.Navigator>
         </NavigationContainer>
       </WatchListProvider>
     </View>
   );
 }
+
+/**
+ * TODO: Implement Unit Testing
+ */
