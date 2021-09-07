@@ -23,7 +23,7 @@ function PopularScreen(navigation: any): JSX.Element {
   });
   return (
     <ScrollView>
-      <React.Suspense fallback={<Text>loading...</Text>}>
+      <React.Suspense fallback={<View style={Styles.center}><Text>loading...</Text></View>}>
         <View style={Styles.movieLayout}>
           {popular.map((movie: IMovie, index: number) => (
             <TouchableOpacity

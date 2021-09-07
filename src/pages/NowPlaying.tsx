@@ -24,7 +24,7 @@ function NowPLayingScreen(navigation: any): JSX.Element {
 
   return (
     <ScrollView>
-      <React.Suspense fallback={<Text>Loading...</Text>}>
+      <React.Suspense fallback={<View style={Styles.center}><Text>loading...</Text></View>}>
         <View style={Styles.movieLayout}>
           {nowPlaying.map((movie: IMovie, index: number) => (
             <TouchableOpacity
