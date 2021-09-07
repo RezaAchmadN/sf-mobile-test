@@ -4,11 +4,6 @@
 
 export type Dispatch = React.Dispatch<IAction>;
 
-export interface IState {
-  movies: Array<IMovie>;
-  WatchLists: Array<IMovie>;
-}
-
 export interface IAction {
     type: string;
     payload: Array<IMovie> | any;
@@ -29,15 +24,4 @@ export interface IMovie {
   video: boolean;
   vote_average: number;
   vote_count: number;
-}
-
-export interface IMovieProps {
-  movies: Array<IMovie>;
-  WatchListsStore: { watchLists: []; watchListsDispatch: Dispatch };
-  toogleFavAction: (
-    state: IState,
-    dispatch: Dispatch,
-    movie: IMovie
-  ) => IAction;
-  WatchLists: Array<IMovie>;
 }

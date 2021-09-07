@@ -1,7 +1,7 @@
 import React from "react";
 import { IMovie } from "../interfaces";
 import { fetchDataMoviesAction } from "../Actions";
-import { ScrollView, View, Text, Button, TouchableOpacity } from "react-native";
+import { ScrollView, View, Text, TouchableOpacity } from "react-native";
 import { Styles } from "../../Styles";
 import { MoviesProvider, MoviesStore } from "../stores/MoviesStore";
 

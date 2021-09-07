@@ -1,4 +1,3 @@
-import React from "react";
 import { StyleSheet, Dimensions, StatusBar } from "react-native";
 
 const windowWidth = Dimensions.get("window").width;
@@ -16,7 +15,7 @@ export const Styles = StyleSheet.create({
     paddingBottom: 100
   },
   movieBox: {
-    borderRadius: 20,
+    borderRadius: 8,
     backgroundColor: "white",
     marginVertical: 8,
     paddingRight: 16,
@@ -38,8 +37,8 @@ export const Styles = StyleSheet.create({
     fontWeight: "bold",
   },
   imageAtList: {
-    borderTopLeftRadius: 20,
-    borderBottomLeftRadius: 20,
+    borderTopLeftRadius: 8,
+    borderBottomLeftRadius: 8,
     width: 100,
     height: 100,
   },
