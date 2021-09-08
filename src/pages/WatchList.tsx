@@ -1,7 +1,12 @@
 import React from "react";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  SafeAreaView,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
-import { IMovie } from "../interfaces";
 import { Styles } from "../../Styles";
 import { WatchListsStore } from "../stores/WatchListsStore";
 
@@ -11,21 +16,30 @@ export default function WatchLists({ navigation }: any): JSX.Element {
   const { watchLists } = React.useContext(WatchListsStore);
 
   return (
-    <ScrollView>
-      <React.Suspense fallback={<Text>loading...</Text>}>
-        <View style={Styles.movieLayout}>
-          {watchLists.map((movie: IMovie, index: number) => (
+    <SafeAreaView>
+      <React.Suspense
+        fallback={
+          <View style={Styles.center}>
+            <ActivityIndicator size="large" color={"#0000ff"} />
+          </View>
+        }
+      >
+        <FlatList
+          style={Styles.movieLayout}
+          contentContainerStyle={{ paddingBottom: 32 }}
+          data={watchLists}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => (
             <TouchableOpacity
-              key={index}
               onPress={() =>
-                navigation?.push("MovieDetail", { title: movie.title })
+                navigation?.push("MovieDetail", { title: item.title })
               }
             >
-              <MovieList {...movie} />
+              <MovieList {...item} />
             </TouchableOpacity>
-          ))}
-        </View>
+          )}
+        />
       </React.Suspense>
-    </ScrollView>
+    </SafeAreaView>
   );
 }

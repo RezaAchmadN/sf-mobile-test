@@ -12,7 +12,7 @@ export const Styles = StyleSheet.create({
   },
   movieLayout: {
     paddingHorizontal: 16,
-    paddingBottom: 100
+    height: '100%'
   },
   movieBox: {
     borderRadius: 8,
@@ -44,31 +44,34 @@ export const Styles = StyleSheet.create({
   },
   iconOn: {
     color: "blue",
-    opacity: 1
+    opacity: 1,
   },
   iconOff: {
     color: "black",
-    opacity: 0.3
+    opacity: 0.3,
   },
   navContainer: {
-    position:  "absolute",
+    position: "absolute",
     alignItems: "center",
     bottom: 30,
   },
   navBar: {
     flexDirection: "row",
     backgroundColor: "black",
-    width: '90%',
+    width: "90%",
     justifyContent: "space-evenly",
     borderRadius: 40,
-    padding: 16
+    padding: 16,
   },
   iconNavBar: {
     color: "white",
   },
   center: {
     flex: 1, 
+    alignItems: 'center',
     justifyContent: 'center', 
-    alignItems: 'center'
+    position: 'absolute', 
+    width: windowWidth,
+    paddingTop: 20
   },
 });
