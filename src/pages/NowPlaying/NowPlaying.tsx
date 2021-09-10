@@ -11,10 +11,10 @@ import {
 import { Button } from "react-native-elements";
 import Feather from "react-native-vector-icons/Feather";
 
-import { Styles } from "../../Styles";
-import { NOW_PLAYING_MOVIE_LIST } from "../services/tmdb";
+import { Styles } from "../../../Styles";
+import { NOW_PLAYING_MOVIE_LIST } from "../../services/tmdb";
 
-const MovieList = React.lazy(() => import("../components/MovieCard"));
+const MovieList = React.lazy(() => import("../../components/MovieCard"));
 
 const getCurrentDate = (
   datePlus: number,

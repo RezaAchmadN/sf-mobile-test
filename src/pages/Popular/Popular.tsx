@@ -1,37 +1,40 @@
+import { useLazyQuery } from "@apollo/client";
 import React, { useEffect, useState } from "react";
 import {
-  View,
-  Text,
-  TouchableOpacity,
+  ActivityIndicator,
   FlatList,
   SafeAreaView,
-  ActivityIndicator,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import { Button } from "react-native-elements";
 import Feather from "react-native-vector-icons/Feather";
-import { useLazyQuery } from "@apollo/client";
 
-import { Styles } from "../../Styles";
-import { MOVIE_LIST } from "../services/tmdb";
+import { Styles } from "../../../Styles";
+import { POPULAR_MOVIE_LIST } from "../../services/tmdb";
 
-const MovieList = React.lazy<any>(() => import("../components/MovieCard"));
+const MovieList = React.lazy<any>(() => import("../../components/MovieCard"));
 
-export default function Home({ navigation }: any): JSX.Element {
+export default function Popular({ navigation }: any) {
   const [Movies, setMovies] = useState<any>([]);
-  const [Page, setPage] = useState(1);
+  const [Page, setPage] = useState<number>(1);
   const [TotalPage, setTotalPage] = useState<number>(1);
 
-  const [fetchMovieList, { loading, error }] = useLazyQuery(MOVIE_LIST, {
-    onCompleted: (data) => {
-      setMovies([...Movies, ...data.Movies.results]);
-      setPage(data.Movies.page);
-      setTotalPage(data.Movies.total_pages);
-    },
-  });
+  const [fetchMovieList, { loading, error }] = useLazyQuery(
+    POPULAR_MOVIE_LIST,
+    {
+      onCompleted: (data) => {
+        setMovies([...Movies, ...data.Movies.results]);
+        setPage(data.Movies.page);
+        setTotalPage(data.Movies.total_pages);
+      },
+    }
+  );
 
   useEffect(() => {
     fetchMovieList({
-      variables: { page: Page },
+      variables: { order: "asc", page: Page },
     });
   }, []);
 
@@ -66,7 +69,7 @@ export default function Home({ navigation }: any): JSX.Element {
           onEndReached={() => {
             if (TotalPage > Page)
               fetchMovieList({
-                variables: { page: Page + 1 },
+                variables: { order: "asc", page: Page + 1 },
               });
           }}
           renderItem={({ item }) => (

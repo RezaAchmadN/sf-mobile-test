@@ -1,42 +1,40 @@
-import { useLazyQuery } from "@apollo/client";
 import React, { useEffect, useState } from "react";
 import {
-  ActivityIndicator,
-  FlatList,
-  SafeAreaView,
+  View,
   Text,
   TouchableOpacity,
-  View,
+  FlatList,
+  SafeAreaView,
+  ActivityIndicator,
 } from "react-native";
 import { Button } from "react-native-elements";
 import Feather from "react-native-vector-icons/Feather";
+import { useLazyQuery, useQuery } from "@apollo/client";
 
-import { Styles } from "../../Styles";
-import { POPULAR_MOVIE_LIST } from "../services/tmdb";
+import { Styles } from "../../../Styles";
+import { MOVIE_LIST } from "../../services/tmdb";
 
-const MovieList = React.lazy<any>(() => import("../components/MovieCard"));
+const MovieCard = React.lazy<any>(() => import("../../components/MovieCard"));
 
-export default function Popular({ navigation }: any) {
+export default function Home({ navigation }: any): JSX.Element {
   const [Movies, setMovies] = useState<any>([]);
-  const [Page, setPage] = useState<number>(1);
+  const [Page, setPage] = useState(1);
   const [TotalPage, setTotalPage] = useState<number>(1);
 
-  const [fetchMovieList, { loading, error }] = useLazyQuery(
-    POPULAR_MOVIE_LIST,
-    {
-      onCompleted: (data) => {
-        setMovies([...Movies, ...data.Movies.results]);
-        setPage(data.Movies.page);
-        setTotalPage(data.Movies.total_pages);
-      },
-    }
-  );
-
-  useEffect(() => {
-    fetchMovieList({
-      variables: { order: "asc", page: Page },
-    });
-  }, []);
+  const { loading, error, refetch } = useQuery(MOVIE_LIST, {
+    notifyOnNetworkStatusChange: true,
+    onError: () => {
+      console.log(error);
+    },
+    onCompleted: (data) => {
+      console.log("onCompleted");
+      setMovies([...Movies, ...data.Movies.results]);
+      setPage(data.Movies.page);
+      setTotalPage(data.Movies.total_pages);
+    },
+  });
+  console.log(loading);
+  
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -66,11 +64,8 @@ export default function Popular({ navigation }: any) {
           data={Movies}
           keyExtractor={(item, index) => index.toString()}
           onEndReachedThreshold={0.1}
-          onEndReached={() => {
-            if (TotalPage > Page)
-              fetchMovieList({
-                variables: { order: "asc", page: Page + 1 },
-              });
+          onEndReached={() => {            
+            if (TotalPage > Page) refetch();
           }}
           renderItem={({ item }) => (
             <TouchableOpacity
@@ -78,7 +73,7 @@ export default function Popular({ navigation }: any) {
                 navigation?.push("MovieDetail", { title: item.title })
               }
             >
-              <MovieList {...item} />
+              <MovieCard {...item} testID="MovieCard" />
             </TouchableOpacity>
           )}
         />
@@ -88,6 +83,7 @@ export default function Popular({ navigation }: any) {
           style={Styles.center}
           size="large"
           color={"#0000ff"}
+          testID="loading"
         />
       )}
     </SafeAreaView>

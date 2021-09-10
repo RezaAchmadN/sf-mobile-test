@@ -7,10 +7,10 @@ import {
   View,
 } from "react-native";
 
-import { Styles } from "../../Styles";
-import { WatchListsStore } from "../stores/WatchListsStore";
+import { Styles } from "../../../Styles";
+import { WatchListsStore } from "../../stores/WatchListsStore";
 
-const MovieList = React.lazy<any>(() => import("../components/MovieCard"));
+const MovieList = React.lazy<any>(() => import("../../components/MovieCard"));
 
 export default function WatchLists({ navigation }: any): JSX.Element {
   const { watchLists } = React.useContext(WatchListsStore);

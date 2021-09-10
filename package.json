@@ -5,7 +5,15 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "test": "jest"
+  },
+  "jest": {
+    "preset": "jest-expo",
+    "transformIgnorePatterns": [
+      "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|@sentry/.*)"
+    ],
+    "collectCoverage": true
   },
   "dependencies": {
     "@apollo/client": "^3.4.10",
@@ -26,9 +34,14 @@
     "react-native-vector-icons": "^8.1.0"
   },
   "devDependencies": {
+    "@testing-library/react-native": "^7.2.0",
+    "@types/jest": "^27.0.1",
     "@types/react": "~16.9.35",
     "@types/react-native": "~0.63.2",
     "@types/react-native-vector-icons": "^6.4.8",
+    "@types/react-test-renderer": "^17.0.1",
+    "jest-expo": "^42.1.0",
+    "react-test-renderer": "^17.0.2",
     "typescript": "~4.0.0"
   },
   "private": true

@@ -12,13 +12,13 @@ import {
 import { SearchBar } from "react-native-elements";
 import { SearchBarBaseProps } from "react-native-elements/dist/searchbar/SearchBar";
 
-import { Styles } from "../../Styles";
-import { SEARCH_MOVIE } from "../services/tmdb";
+import { Styles } from "../../../Styles";
+import { SEARCH_MOVIE } from "../../services/tmdb";
 
 // Using SearchBarBaseProps instead of SearchBarDefaultProps & SearchBarAndroidProps & SearchBarIOSProps
 const SafeSearchBar = SearchBar as unknown as React.FC<SearchBarBaseProps>;
 
-const MovieList = React.lazy<any>(() => import("../components/MovieCard"));
+const MovieList = React.lazy<any>(() => import("../../components/MovieCard"));
 
 export default function Search({ navigation }: any): JSX.Element {
   const [Movies, setMovies] = useState<any>([]);

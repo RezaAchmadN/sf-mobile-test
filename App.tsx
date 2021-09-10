@@ -6,13 +6,13 @@ import { NavigationContainer } from "@react-navigation/native";
 import { ApolloProvider } from "@apollo/client";
 
 import { Styles } from "./Styles";
-import Home from "./src/pages/Home";
-import WatchList from "./src/pages/WatchList";
+import Home from "./src/pages/Home/Home";
+import WatchList from "./src/pages/WatchList/WatchList";
 import { WatchListProvider } from "./src/stores/WatchListsStore";
-import Popular from "./src/pages/Popular";
-import NowPlaying from "./src/pages/NowPlaying";
-import MovieDetail from "./src/pages/MovieDetail";
-import Search from "./src/pages/Search";
+import Popular from "./src/pages/Popular/Popular";
+import NowPlaying from "./src/pages/NowPlaying/NowPlaying";
+import MovieDetail from "./src/pages/MovieDetail/MovieDetail";
+import Search from "./src/pages/Search/Search";
 import client from "./src/lib/ApolloClient";
 
 function DrawerNavigation() {
