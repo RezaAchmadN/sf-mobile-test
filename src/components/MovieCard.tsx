@@ -15,7 +15,7 @@ export default function movieList(movie: IMovie): JSX.Element {
   const imgBaseURL = "https://www.themoviedb.org/t/p/w100_and_h100_bestv2/";
   
   return (
-    <View style={Styles.movieBox}>
+    <View style={Styles.movieBox} testID="MovieCard">
       <Image
         style={Styles.imageAtList}
         source={{ uri: imgBaseURL + movie.poster_path }}

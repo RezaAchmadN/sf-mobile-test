@@ -30,6 +30,8 @@ export default function Search({ navigation }: any): JSX.Element {
     SEARCH_MOVIE,
     {
       onCompleted: (data) => {
+        console.log(data);
+        
         setMovies(data.Movies.results);
         setPage(data.Movies.page);
         setTotalPage(data.Movies.total_pages);

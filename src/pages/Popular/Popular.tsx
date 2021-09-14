@@ -1,42 +1,36 @@
-import { useLazyQuery } from "@apollo/client";
-import React, { useEffect, useState } from "react";
+import { useQuery } from "@apollo/client";
+import React, { useState } from "react";
 import {
   ActivityIndicator,
   FlatList,
   SafeAreaView,
   Text,
   TouchableOpacity,
-  View,
 } from "react-native";
 import { Button } from "react-native-elements";
 import Feather from "react-native-vector-icons/Feather";
 
 import { Styles } from "../../../Styles";
 import { POPULAR_MOVIE_LIST } from "../../services/tmdb";
-
-const MovieList = React.lazy<any>(() => import("../../components/MovieCard"));
+import MovieCard from "../../components/MovieCard";
 
 export default function Popular({ navigation }: any) {
   const [Movies, setMovies] = useState<any>([]);
   const [Page, setPage] = useState<number>(1);
   const [TotalPage, setTotalPage] = useState<number>(1);
 
-  const [fetchMovieList, { loading, error }] = useLazyQuery(
-    POPULAR_MOVIE_LIST,
-    {
-      onCompleted: (data) => {
-        setMovies([...Movies, ...data.Movies.results]);
-        setPage(data.Movies.page);
-        setTotalPage(data.Movies.total_pages);
-      },
-    }
-  );
-
-  useEffect(() => {
-    fetchMovieList({
-      variables: { order: "asc", page: Page },
-    });
-  }, []);
+  const { loading, error, refetch } = useQuery(POPULAR_MOVIE_LIST, {
+    variables: { order: "asc", page: Page },
+    notifyOnNetworkStatusChange: true,
+    onError: (error) => {
+      // console.log(error);
+    },
+    onCompleted: (data) => {
+      setMovies([...Movies, ...data.Movies.results]);
+      setPage(data.Movies.page);
+      setTotalPage(data.Movies.total_pages);
+    },
+  });
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -52,14 +46,7 @@ export default function Popular({ navigation }: any) {
 
   return (
     <SafeAreaView>
-      {error && <Text>`Error! ${error}`</Text>}
-      <React.Suspense
-        fallback={
-          <View style={Styles.center}>
-            <ActivityIndicator size="large" color={"#0000ff"} />
-          </View>
-        }
-      >
+      {error && <Text>Error!</Text>}
         <FlatList
           style={Styles.movieLayout}
           contentContainerStyle={{ paddingBottom: 32 }}
@@ -68,8 +55,8 @@ export default function Popular({ navigation }: any) {
           onEndReachedThreshold={0.1}
           onEndReached={() => {
             if (TotalPage > Page)
-              fetchMovieList({
-                variables: { order: "asc", page: Page + 1 },
+              refetch({
+                 order: "asc", page: Page + 1 
               });
           }}
           renderItem={({ item }) => (
@@ -78,16 +65,16 @@ export default function Popular({ navigation }: any) {
                 navigation?.push("MovieDetail", { title: item.title })
               }
             >
-              <MovieList {...item} />
+              <MovieCard {...item} />
             </TouchableOpacity>
           )}
         />
-      </React.Suspense>
       {loading && (
         <ActivityIndicator
           style={Styles.center}
           size="large"
           color={"#0000ff"}
+          testID="loading"
         />
       )}
     </SafeAreaView>

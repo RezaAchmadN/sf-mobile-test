@@ -1,8 +1,8 @@
 import React from "react";
-import { act, cleanup, fireEvent, render } from "@testing-library/react-native";
+import { act, cleanup, render } from "@testing-library/react-native";
 import { MockedProvider } from "@apollo/client/testing";
-import { MOVIE_LIST } from "../../services/tmdb";
-import Home from "./Home";
+import { POPULAR_MOVIE_LIST } from "../../services/tmdb";
+import Popular from "./Popular";
 import { WatchListProvider } from "../../stores/WatchListsStore";
 
 const props = {
@@ -15,8 +15,8 @@ const props = {
 const mocks = [
   {
     request: {
-      query: MOVIE_LIST,
-      variables: { page: 1 },
+      query: POPULAR_MOVIE_LIST,
+      variables: { order: "asc", page: 1 },
     },
     result: {
       data: {
@@ -52,8 +52,8 @@ const mocks = [
   },
   {
     request: {
-      query: MOVIE_LIST,
-      variables: { page: 2 },
+      query: POPULAR_MOVIE_LIST,
+      variables: { order: "asc", page: 2 },
     },
     result: {
       data: {
@@ -82,20 +82,20 @@ const mocks = [
 const networkErrorMocks = [
   {
     request: {
-      query: MOVIE_LIST,
+      query: POPULAR_MOVIE_LIST,
       variables: { page: 1 },
     },
     error: new Error("An error occurred"),
   },
 ];
 
-describe("HomeScreen", () => {
+describe("NowPlaying", () => {
   afterEach(cleanup);
 
   it("Testing the 'loading'", () => {
     const component = render(
       <MockedProvider mocks={[]} addTypename={false}>
-        <Home {...props} />
+        <Popular {...props} />
       </MockedProvider>
     );
 
@@ -106,7 +106,7 @@ describe("HomeScreen", () => {
     const component = render(
       <MockedProvider mocks={mocks} addTypename={false}>
         <WatchListProvider>
-          <Home {...props} />
+          <Popular {...props} />
         </WatchListProvider>
       </MockedProvider>
     );
@@ -121,7 +121,7 @@ describe("HomeScreen", () => {
     const component = render(
       <MockedProvider mocks={networkErrorMocks} addTypename={false}>
         <WatchListProvider>
-          <Home {...props} />
+          <Popular {...props} />
         </WatchListProvider>
       </MockedProvider>
     );

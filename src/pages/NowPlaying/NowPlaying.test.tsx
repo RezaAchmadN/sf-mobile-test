@@ -1,9 +1,10 @@
 import React from "react";
 import { act, cleanup, fireEvent, render } from "@testing-library/react-native";
 import { MockedProvider } from "@apollo/client/testing";
-import { MOVIE_LIST } from "../../services/tmdb";
-import Home from "./Home";
+import { MOVIE_LIST, NOW_PLAYING_MOVIE_LIST } from "../../services/tmdb";
+import NowPlaying from "./NowPlaying";
 import { WatchListProvider } from "../../stores/WatchListsStore";
+import { getCurrentDate } from "../../services/date";
 
 const props = {
   navigation: {
@@ -15,8 +16,12 @@ const props = {
 const mocks = [
   {
     request: {
-      query: MOVIE_LIST,
-      variables: { page: 1 },
+      query: NOW_PLAYING_MOVIE_LIST,
+      variables: {
+        gte: getCurrentDate(0, -1, 0),
+        lte: getCurrentDate(0, 0, 0),
+        page: 1,
+      },
     },
     result: {
       data: {
@@ -52,8 +57,12 @@ const mocks = [
   },
   {
     request: {
-      query: MOVIE_LIST,
-      variables: { page: 2 },
+      query: NOW_PLAYING_MOVIE_LIST,
+      variables: {
+        gte: getCurrentDate(0, -1, 0),
+        lte: getCurrentDate(0, 0, 0),
+        page: 2,
+      },
     },
     result: {
       data: {
@@ -82,20 +91,20 @@ const mocks = [
 const networkErrorMocks = [
   {
     request: {
-      query: MOVIE_LIST,
+      query: NOW_PLAYING_MOVIE_LIST,
       variables: { page: 1 },
     },
     error: new Error("An error occurred"),
   },
 ];
 
-describe("HomeScreen", () => {
+describe("NowPlaying", () => {
   afterEach(cleanup);
 
   it("Testing the 'loading'", () => {
     const component = render(
       <MockedProvider mocks={[]} addTypename={false}>
-        <Home {...props} />
+        <NowPlaying {...props} />
       </MockedProvider>
     );
 
@@ -106,7 +115,7 @@ describe("HomeScreen", () => {
     const component = render(
       <MockedProvider mocks={mocks} addTypename={false}>
         <WatchListProvider>
-          <Home {...props} />
+          <NowPlaying {...props} />
         </WatchListProvider>
       </MockedProvider>
     );
@@ -121,7 +130,7 @@ describe("HomeScreen", () => {
     const component = render(
       <MockedProvider mocks={networkErrorMocks} addTypename={false}>
         <WatchListProvider>
-          <Home {...props} />
+          <NowPlaying {...props} />
         </WatchListProvider>
       </MockedProvider>
     );
