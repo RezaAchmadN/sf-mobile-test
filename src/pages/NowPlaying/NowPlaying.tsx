@@ -69,7 +69,7 @@ export default function NowPlaying({ navigation }: any) {
         renderItem={({ item }) => (
           <TouchableOpacity
             onPress={() =>
-              navigation?.push("MovieDetail", { title: item.title })
+              navigation?.push("MovieDetail", { title: item.title, props: item })
             }
           >
             <MovieCard {...item} />

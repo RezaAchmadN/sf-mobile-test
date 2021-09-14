@@ -60,7 +60,7 @@ export default function Home({ navigation }: any): JSX.Element {
           <TouchableOpacity
             testID={`TouchableOpacity`}
             onPress={() =>
-              navigation?.push("MovieDetail", { title: item.title })
+              navigation?.push("MovieDetail", { title: item.title, props: item })
             }
           >
             <MovieCard {...item} />

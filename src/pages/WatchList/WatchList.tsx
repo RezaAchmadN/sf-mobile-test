@@ -32,7 +32,7 @@ export default function WatchLists({ navigation }: any): JSX.Element {
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() =>
-                navigation?.push("MovieDetail", { title: item.title })
+                navigation?.push("MovieDetail", { title: item.title, props: item })
               }
             >
               <MovieList {...item} />

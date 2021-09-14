@@ -62,7 +62,7 @@ export default function Popular({ navigation }: any) {
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() =>
-                navigation?.push("MovieDetail", { title: item.title })
+                navigation?.push("MovieDetail", { title: item.title, props: item })
               }
             >
               <MovieCard {...item} />

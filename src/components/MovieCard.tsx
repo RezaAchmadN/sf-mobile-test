@@ -12,7 +12,7 @@ import { toogleFavAction } from "../Actions";
 export default function movieList(movie: IMovie): JSX.Element {
   const { watchLists, watchListsDispatch } = React.useContext(WatchListsStore);
 
-  const imgBaseURL = "https://www.themoviedb.org/t/p/w100_and_h100_bestv2/";
+  const imgBaseURL = "https://www.themoviedb.org/t/p/original/";
   
   return (
     <View style={Styles.movieBox} testID="MovieCard">

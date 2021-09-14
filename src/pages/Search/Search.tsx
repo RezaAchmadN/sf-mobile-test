@@ -89,7 +89,7 @@ export default function Search({ navigation }: any): JSX.Element {
           renderItem={({ item, index }) => (
             <TouchableOpacity
               onPress={() =>
-                navigation?.push("MovieDetail", { title: item.title })
+                navigation?.push("MovieDetail", { title: item.title, props: item })
               }
             >
               <MovieList {...item} />

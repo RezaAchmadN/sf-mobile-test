@@ -41,6 +41,7 @@ export const Styles = StyleSheet.create({
     borderBottomLeftRadius: 8,
     width: 100,
     height: 100,
+    resizeMode: "contain"
   },
   iconOn: {
     color: "blue",
