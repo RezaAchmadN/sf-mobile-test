@@ -4,6 +4,11 @@
 
 export type Dispatch = React.Dispatch<IAction>;
 
+export interface IFetch {
+  data: any
+  status: number
+}
+
 export interface IAction {
     type: string;
     payload: Array<IMovie> | any;

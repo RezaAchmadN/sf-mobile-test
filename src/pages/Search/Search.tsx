@@ -1,9 +1,6 @@
-import { useLazyQuery } from "@apollo/client";
 import React, { useState } from "react";
 import {
-  Keyboard,
   View,
-  Text,
   TouchableOpacity,
   FlatList,
   ActivityIndicator,
@@ -13,7 +10,7 @@ import { SearchBar } from "react-native-elements";
 import { SearchBarBaseProps } from "react-native-elements/dist/searchbar/SearchBar";
 
 import { Styles } from "../../../Styles";
-import { SEARCH_MOVIE } from "../../services/tmdb";
+import { fetchSearchMovies } from "../../Actions";
 
 // Using SearchBarBaseProps instead of SearchBarDefaultProps & SearchBarAndroidProps & SearchBarIOSProps
 const SafeSearchBar = SearchBar as unknown as React.FC<SearchBarBaseProps>;
@@ -25,28 +22,7 @@ export default function Search({ navigation }: any): JSX.Element {
   const [Page, setPage] = useState<number>(1);
   const [TotalPage, setTotalPage] = useState<number>(1);
   const [SearchQuery, setSearchQuery] = React.useState<string>("");
-
-  const [handleSearchButtonPressed, { loading, error }] = useLazyQuery(
-    SEARCH_MOVIE,
-    {
-      onCompleted: (data) => {
-        console.log(data);
-        
-        setMovies(data.Movies.results);
-        setPage(data.Movies.page);
-        setTotalPage(data.Movies.total_pages);
-      },
-    }
-  );
-
-  const [handleNextPage, { loading: loadingNextPage, error: errorNextPage }] =
-    useLazyQuery(SEARCH_MOVIE, {
-      onCompleted: (data) => {
-        setMovies([...Movies, ...data.Movies.results]);
-        setPage(data.Movies.page);
-        Keyboard.dismiss();
-      },
-    });
+  const [Loading, setLoading] = useState<boolean>(false);
 
   return (
     <SafeAreaView>
@@ -57,16 +33,19 @@ export default function Search({ navigation }: any): JSX.Element {
         }}
         value={SearchQuery}
         onSubmitEditing={() => {
-          !!SearchQuery &&
-            handleSearchButtonPressed({
-              variables: { searchQuery: SearchQuery, page: 1 },
-            });
+          if (!!SearchQuery) {
+            setLoading(true);
+            fetchSearchMovies(1, SearchQuery)
+              .then((res: any) => {
+                setMovies(res.data.results);
+                setPage(res.data.page);
+                setTotalPage(res.data.total_pages);
+              })
+              .finally(() => setLoading(false));
+          }
         }}
         platform={"ios"}
       />
-      {(error || errorNextPage) && (
-        <Text>`Error! ${error || errorNextPage}`</Text>
-      )}
       <React.Suspense
         fallback={
           <View style={Styles.center}>
@@ -81,15 +60,24 @@ export default function Search({ navigation }: any): JSX.Element {
           keyExtractor={(item, index) => index.toString()}
           onEndReachedThreshold={0.1}
           onEndReached={() => {
-            if (TotalPage > Page)
-              handleNextPage({
-                variables: { searchQuery: SearchQuery, page: Page + 1 },
-              });
+            if (TotalPage > Page) {
+              setLoading(true);
+              fetchSearchMovies(Page + 1, SearchQuery)
+                .then((res: any) => {
+                  setMovies([...Movies, ...res.data.results]);
+                  setPage(res.data.page);
+                  setTotalPage(res.data.total_pages);
+                })
+                .finally(() => setLoading(false));
+            }
           }}
           renderItem={({ item, index }) => (
             <TouchableOpacity
               onPress={() =>
-                navigation?.push("MovieDetail", { title: item.title, props: item })
+                navigation?.push("MovieDetail", {
+                  title: item.title,
+                  props: item,
+                })
               }
             >
               <MovieList {...item} />
@@ -97,7 +85,7 @@ export default function Search({ navigation }: any): JSX.Element {
           )}
         />
       </React.Suspense>
-      {(loading || loadingNextPage) && (
+      {Loading && (
         <ActivityIndicator
           style={Styles.center}
           size="large"

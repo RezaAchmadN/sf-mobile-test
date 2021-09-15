@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
-  Text,
   TouchableOpacity,
   FlatList,
   SafeAreaView,
@@ -8,29 +7,25 @@ import {
 } from "react-native";
 import { Button } from "react-native-elements";
 import Feather from "react-native-vector-icons/Feather";
-import { useQuery } from "@apollo/client";
 
 import { Styles } from "../../../Styles";
-import { MOVIE_LIST } from "../../services/tmdb";
 import MovieCard from "../../components/MovieCard";
+import { fetchMovies } from "../../Actions";
 
 export default function Home({ navigation }: any): JSX.Element {
   const [Movies, setMovies] = useState<any>([]);
   const [Page, setPage] = useState(1);
   const [TotalPage, setTotalPage] = useState<number>(1);
+  const [Loading, setLoading] = useState<boolean>(false)
 
-  const { loading, error, refetch } = useQuery(MOVIE_LIST, {
-    variables: { page: Page },
-    notifyOnNetworkStatusChange: true,
-    onError: (error) => {
-      // console.log(error);
-    },
-    onCompleted: (data) => {
-      setMovies([...Movies, ...data.Movies.results]);
-      setPage(data.Movies.page);
-      setTotalPage(data.Movies.total_pages);
-    },
-  });
+  useEffect(() => {
+    setLoading(true)
+    fetchMovies(Page).then((res: any) => {
+      setMovies([...Movies, ...res.data.results]);
+      setPage(res.data.page);
+      setTotalPage(res.data.total_pages);
+    }).finally(()=> setLoading(false));
+  }, []);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -45,7 +40,6 @@ export default function Home({ navigation }: any): JSX.Element {
   }, [navigation]);
   return (
     <SafeAreaView>
-      {error && <Text>Error!</Text>}
       <FlatList
         testID="FlatList"
         style={Styles.movieLayout}
@@ -54,20 +48,30 @@ export default function Home({ navigation }: any): JSX.Element {
         keyExtractor={(item, index) => index.toString()}
         onEndReachedThreshold={0.1}
         onEndReached={() => {
-          if (TotalPage > Page) refetch({ page: Page + 1 });
+          if (TotalPage > Page){
+            setLoading(true);
+            fetchMovies(Page + 1).then((res: any) => {
+              setMovies([...Movies, ...res.data.results]);
+              setPage(res.data.page);
+              setTotalPage(res.data.total_pages);
+            }).finally(()=>setLoading(false));
+          }
         }}
         renderItem={({ item }) => (
           <TouchableOpacity
             testID={`TouchableOpacity`}
             onPress={() =>
-              navigation?.push("MovieDetail", { title: item.title, props: item })
+              navigation?.push("MovieDetail", {
+                title: item.title,
+                props: item,
+              })
             }
           >
             <MovieCard {...item} />
           </TouchableOpacity>
         )}
       />
-      {loading && (
+      {Loading && (
         <ActivityIndicator
           style={Styles.center}
           size="large"

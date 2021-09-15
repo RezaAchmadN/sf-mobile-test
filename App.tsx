@@ -3,7 +3,6 @@ import { View } from "react-native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
-import { ApolloProvider } from "@apollo/client";
 
 import { Styles } from "./Styles";
 import Home from "./src/pages/Home/Home";
@@ -13,7 +12,6 @@ import Popular from "./src/pages/Popular/Popular";
 import NowPlaying from "./src/pages/NowPlaying/NowPlaying";
 import MovieDetail from "./src/pages/MovieDetail/MovieDetail";
 import Search from "./src/pages/Search/Search";
-import client from "./src/lib/ApolloClient";
 
 function DrawerNavigation() {
   const Drawer = createDrawerNavigator();
@@ -32,25 +30,23 @@ export default function App(): JSX.Element {
 
   return (
     <View style={Styles.root}>
-      <ApolloProvider client={client}>
-        <WatchListProvider>
-          <NavigationContainer>
-            <Stack.Navigator initialRouteName="Root">
-              <Stack.Screen
-                name="Root"
-                component={DrawerNavigation}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="MovieDetail"
-                component={MovieDetail}
-                options={({ route }: any) => ({ title: route.params.title })}
-              />
-              <Stack.Screen name="Search" component={Search} />
-            </Stack.Navigator>
-          </NavigationContainer>
-        </WatchListProvider>
-      </ApolloProvider>
+      <WatchListProvider>
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName="Root">
+            <Stack.Screen
+              name="Root"
+              component={DrawerNavigation}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="MovieDetail"
+              component={MovieDetail}
+              options={({ route }: any) => ({ title: route.params.title })}
+            />
+            <Stack.Screen name="Search" component={Search} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </WatchListProvider>
     </View>
   );
 }
