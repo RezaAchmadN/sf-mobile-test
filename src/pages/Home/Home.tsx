@@ -25,6 +25,7 @@ export default function Home({ navigation }: any): JSX.Element {
       setPage(res.data.page);
       setTotalPage(res.data.total_pages);
     }).finally(()=> setLoading(false));
+    
   }, []);
 
   React.useLayoutEffect(() => {
