@@ -8,12 +8,11 @@ import { Styles } from "../../Styles";
 import { WatchListsStore } from "../stores/WatchListsStore";
 import { toogleFavAction } from "../Actions";
 
-
 export default function movieList(movie: IMovie): JSX.Element {
   const { watchLists, watchListsDispatch } = React.useContext(WatchListsStore);
 
   const imgBaseURL = "https://www.themoviedb.org/t/p/original/";
-  
+
   return (
     <View style={Styles.movieBox} testID="MovieCard">
       <Image
@@ -21,11 +20,18 @@ export default function movieList(movie: IMovie): JSX.Element {
         source={{ uri: imgBaseURL + movie.poster_path }}
       />
       <Text style={Styles.title}>{movie.title}</Text>
-      <TouchableOpacity onPress={() => toogleFavAction(watchLists, watchListsDispatch, movie)} >
-      {watchLists.find((fav: IMovie) => fav.id === movie.id) ?
-        <Ionicons name="md-checkmark-circle-outline" style={Styles.iconOff} size={30}/>
-        : <Entypo name="back-in-time" style={Styles.iconOn} size={30}/>
-      }
+      <TouchableOpacity
+        onPress={() => toogleFavAction(watchLists, watchListsDispatch, movie)}
+      >
+        {watchLists.find((fav: IMovie) => fav.id === movie.id) ? (
+          <Ionicons
+            name="md-checkmark-circle-outline"
+            style={Styles.iconOff}
+            size={30}
+          />
+        ) : (
+          <Entypo name="back-in-time" style={Styles.iconOn} size={30} />
+        )}
       </TouchableOpacity>
     </View>
   );
