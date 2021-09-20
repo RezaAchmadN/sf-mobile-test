@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { SearchBar } from "react-native-elements";
 import { SearchBarBaseProps } from "react-native-elements/dist/searchbar/SearchBar";
+import { oc } from "ts-optchain";
 
 import { Styles } from "../../../Styles";
 import { fetchSearchMovies } from "../../Actions";
@@ -37,9 +38,10 @@ export default function Search({ navigation }: any): JSX.Element {
             setLoading(true);
             fetchSearchMovies(1, SearchQuery)
               .then((res: any) => {
-                setMovies(res.data.results);
-                setPage(res.data.page);
-                setTotalPage(res.data.total_pages);
+                const newMovie = oc(res).data.results([]);
+                setMovies([...Movies, ...newMovie]);
+                setPage(oc(res).data.page(Page));
+                setTotalPage(oc(res).data.total_pages(TotalPage));
               })
               .finally(() => setLoading(false));
           }
@@ -64,9 +66,10 @@ export default function Search({ navigation }: any): JSX.Element {
               setLoading(true);
               fetchSearchMovies(Page + 1, SearchQuery)
                 .then((res: any) => {
-                  setMovies([...Movies, ...res.data.results]);
-                  setPage(res.data.page);
-                  setTotalPage(res.data.total_pages);
+                  const newMovie = oc(res).data.results([]);
+                  setMovies([...Movies, ...newMovie]);
+                  setPage(oc(res).data.page(Page + 1));
+                  setTotalPage(oc(res).data.total_pages(TotalPage));
                 })
                 .finally(() => setLoading(false));
             }

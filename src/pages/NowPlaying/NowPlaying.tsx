@@ -12,6 +12,7 @@ import { Styles } from "../../../Styles";
 import MovieCard from "../../components/MovieCard";
 import { getCurrentDate } from "../../services/date";
 import { fetchNowPlayingMovies } from "../../Actions";
+import { oc } from "ts-optchain";
 
 export default function NowPlaying({ navigation }: any) {
   const [Movies, setMovies] = useState<any>([]);
@@ -27,9 +28,10 @@ export default function NowPlaying({ navigation }: any) {
       getCurrentDate(0, 0, 0)
     )
       .then((res: any) => {
-        setMovies([...Movies, ...res.data.results]);
-        setPage(res.data.page);
-        setTotalPage(res.data.total_pages);
+        const newMovie = oc(res).data.results([]);
+        setMovies([...Movies, ...newMovie]);
+        setPage(oc(res).data.page(Page));
+        setTotalPage(oc(res).data.total_pages(TotalPage));
       })
       .finally(() => setLoading(false));
   }, []);
@@ -63,9 +65,10 @@ export default function NowPlaying({ navigation }: any) {
               getCurrentDate(0, 0, 0)
             )
               .then((res: any) => {
-                setMovies([...Movies, ...res.data.results]);
-                setPage(res.data.page);
-                setTotalPage(res.data.total_pages);
+                const newMovie = oc(res).data.results([]);
+                setMovies([...Movies, ...newMovie]);
+                setPage(oc(res).data.page(Page + 1));
+                setTotalPage(oc(res).data.total_pages(TotalPage));
               })
               .finally(() => setLoading(false));
         }}

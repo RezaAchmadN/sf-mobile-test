@@ -11,6 +11,7 @@ import Feather from "react-native-vector-icons/Feather";
 import { Styles } from "../../../Styles";
 import MovieCard from "../../components/MovieCard";
 import { fetchPopularMovies } from "../../Actions";
+import { oc } from "ts-optchain";
 
 export default function Popular({ navigation }: any) {
   const [Movies, setMovies] = useState<any>([]);
@@ -19,12 +20,15 @@ export default function Popular({ navigation }: any) {
   const [Loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    setLoading(true)
-    fetchPopularMovies(Page, "asc").then((res: any) => {
-      setMovies([...Movies, ...res.data.results]);
-      setPage(res.data.page);
-      setTotalPage(res.data.total_pages);
-    }).finally(()=>setLoading(false));
+    setLoading(true);
+    fetchPopularMovies(Page, "asc")
+      .then((res: any) => {
+        const newMovie = oc(res).data.results([]);
+        setMovies([...Movies, ...newMovie]);
+        setPage(oc(res).data.page(Page));
+        setTotalPage(oc(res).data.total_pages(TotalPage));
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   React.useLayoutEffect(() => {
@@ -48,13 +52,16 @@ export default function Popular({ navigation }: any) {
         keyExtractor={(item, index) => index.toString()}
         onEndReachedThreshold={0.1}
         onEndReached={() => {
-          setLoading(true)
+          setLoading(true);
           if (TotalPage > Page)
-            fetchPopularMovies(Page + 1, "asc").then((res: any) => {
-              setMovies([...Movies, ...res.data.results]);
-              setPage(res.data.page);
-              setTotalPage(res.data.total_pages);
-            }).finally(()=>setLoading(false));
+            fetchPopularMovies(Page + 1, "asc")
+              .then((res: any) => {
+                const newMovie = oc(res).data.results([]);
+                setMovies([...Movies, ...newMovie]);
+                setPage(oc(res).data.page(Page + 1));
+                setTotalPage(oc(res).data.total_pages(TotalPage));
+              })
+              .finally(() => setLoading(false));
         }}
         renderItem={({ item }) => (
           <TouchableOpacity
